@@ -1,0 +1,32 @@
+::REMOVE ONEDRIVE 
+taskkill /f /im OneDrive.exe
+%SystemRoot%\System32\OneDriveSetup.exe /uninstall
+%SystemRoot%\SysWOW64\OneDriveSetup.exe /uninstall
+rd "%UserProfile%\OneDrive" /Q /S
+rd "%LocalAppData%\Microsoft\OneDrive" /Q /S
+rd "%ProgramData%\Microsoft OneDrive" /Q /S
+rd "C:\OneDriveTemp" /Q /S
+::SET TIMEZONE
+tzutil.exe /s "Eastern Standard Time"
+::SET POWER TO HIGH PERFORMANCE
+powercfg -duplicatescheme 8c5e7fda-e8bf-4a96-9a85-a6e23a8c635c
+::TURN OFF SLEEP
+powercfg.exe /hibernate off
+::DOWNLOAD SOFTWARE
+cd\
+mkdir install
+bitsadmin.exe /transfer "UNZIP" https://home.cs.colorado.edu/~main/cs1300-old/unzip.exe c:\install\unzip.exe
+bitsadmin.exe /transfer "DTIS_DL" https://www.delphidisplay.com/software-downloads/dtis-setup-v2-4-07_20_2010.zip c:\install\dtis-setup.zip
+bitsadmin.exe /transfer "FAST_TRACK" https://www.delphidisplay.com/software-downloads/fast-track-pc-software-setup-2-27.zip c:\install\fast-track.zip
+bitsadmin.exe /transfer "AUTO_LOGIN" https://download.sysinternals.com/files/AutoLogon.zip c:\install\AutoLogon.zip
+unzip.exe AutoLogon.zip
+autologon.exe
+unzip dtis-setup.zip
+"DTIS Setup V2.4.exe"
+unzip fast-track.zip
+"Fast Track PC Software Setup 2.27.exe"
+::INSTALL WINDOWS UPDATES
+UsoClient StartScan
+UsoClient StartDownload
+UsoClient StartInstall
+UsoClient RestartDevice
